@@ -37,7 +37,7 @@ app.get("/getEvents", async (req, res) => {
     let query = " $or: [ { tags: \"bar\" }, { tags: \"music\" } ]"
     // let newQuery = {tags:"bar"};
     let newQuery = { tag: { $elemMatch: "bar" } };
-    let results = await collection.find({}).limit(50).toArray();
+    let results = await collection.find({}).toArray();
     await console.log(results);
     res.json(results).status(200);
   });
@@ -46,7 +46,9 @@ let conn;
 let db;
 function connectDB(){
     try {
-        conn = mongoose.connect(uri);
+        conn = mongoose.connect(uri, {
+            dbName: 'bonbon',
+          });
         db = mongoose.connection;
         console.log("Connected to MongoDB");
     } catch (error) {
